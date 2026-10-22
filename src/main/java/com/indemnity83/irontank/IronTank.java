@@ -1,5 +1,8 @@
 package com.indemnity83.irontank;
 
+import net.minecraftforge.common.MinecraftForge;
+
+import com.indemnity83.irontank.block.BlockExtendedTank;
 import com.indemnity83.irontank.init.ModBlocks;
 import com.indemnity83.irontank.init.ModItems;
 import com.indemnity83.irontank.init.ModRecipies;
@@ -44,7 +47,9 @@ public class IronTank {
 
     @Mod.EventHandler
     public void postinit(FMLPostInitializationEvent event) {
+
         LogHelper.info("Post Initialization Complete!");
+        MinecraftForge.EVENT_BUS.register(new BlockExtendedTank.DollyPlacementHandler());
     }
 
     @Mod.EventHandler

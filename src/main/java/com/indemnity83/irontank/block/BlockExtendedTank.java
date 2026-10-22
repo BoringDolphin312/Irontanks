@@ -1,5 +1,7 @@
 package com.indemnity83.irontank.block;
 
+import java.util.Objects;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -16,9 +18,12 @@ import com.indemnity83.irontank.utility.MaterialHelper;
 
 import buildcraft.BuildCraftFactory;
 import buildcraft.factory.BlockTank;
+import buildcraft.factory.TileTank;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mcp.mobius.betterbarrels.common.items.dolly.ItemBarrelMover.DollyPlaceEvent;
 
 public class BlockExtendedTank extends BlockTank {
 
@@ -28,6 +33,39 @@ public class BlockExtendedTank extends BlockTank {
      * TankType of this block
      */
     public final TankType type;
+
+    public static class DollyPlacementHandler {
+
+        @SubscribeEvent
+        public void onDollyPlace(DollyPlaceEvent event) {
+            TileEntity aboveTarget = event.world.getTileEntity(event.targX, event.targY + 1, event.targZ);
+            TileEntity bellowTarget = event.world.getTileEntity(event.targX, event.targY - 1, event.targZ);
+            String fluidOnDolly = event.tileNBT.getCompoundTag("tank").getString("FluidName");
+
+            if (fluidOnDolly.isEmpty()) return;
+
+            if (bellowTarget instanceof TileTank) {
+                TileTank bellowTank = ((TileTank) bellowTarget).getBottomTank();
+
+                if (bellowTank.tank.getFluid() == null) return;
+
+                if (!Objects.equals(bellowTank.tank.getFluid().getFluid().getName(), fluidOnDolly)) {
+                    event.reject("Can't place tank above another with different fluid");
+                    return;
+                }
+            }
+
+            if (aboveTarget instanceof TileTank) {
+                TileTank aboveTank = ((TileTank) aboveTarget).getBottomTank();
+
+                if (aboveTank.tank.getFluid() == null) return;
+
+                if (!Objects.equals(aboveTank.tank.getFluid().getFluid().getName(), fluidOnDolly)) {
+                    event.reject("Can't place tank bellow another with different fluid");
+                }
+            }
+        }
+    }
 
     public BlockExtendedTank(TankType type) {
         super();
