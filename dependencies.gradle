@@ -6,6 +6,7 @@ dependencies {
 
     api('com.github.GTNewHorizons:BuildCraft:7.1.48:dev')
 //    runtimeOnlyNonPublishable("com.github.GTNewHorizons:Jabba:1.5.23:dev")
-    compileOnly(files("libs/JABBA-1.5.23-master+b04a103eac-dirty.jar"))
-    runtimeOnly(files("libs/JABBA-1.5.23-master+b04a103eac-dirty.jar"))
+
+    compileOnly(files("libs/JABBA-1.5.23-master.1+278cdd8fd8.jar"))
+    runtimeOnly(files("libs/JABBA-1.5.23-master.1+278cdd8fd8.jar"))
 }

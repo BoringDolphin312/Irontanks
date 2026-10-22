@@ -50,8 +50,7 @@ public class BlockExtendedTank extends BlockTank {
                 if (bellowTank.tank.getFluid() == null) return;
 
                 if (!Objects.equals(bellowTank.tank.getFluid().getFluid().getName(), fluidOnDolly)) {
-                    event.reject("Can't place tank above another with different fluid");
-                    return;
+                    event.reject("Cannot place here: vertically stacked tanks must contain the same fluid");
                 }
             }
 
@@ -61,7 +60,7 @@ public class BlockExtendedTank extends BlockTank {
                 if (aboveTank.tank.getFluid() == null) return;
 
                 if (!Objects.equals(aboveTank.tank.getFluid().getFluid().getName(), fluidOnDolly)) {
-                    event.reject("Can't place tank bellow another with different fluid");
+                    event.reject("Cannot place here: vertically stacked tanks must contain the same fluid");
                 }
             }
         }
